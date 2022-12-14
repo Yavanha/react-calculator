@@ -1,5 +1,6 @@
-import "Calculator.css";
+import "./Calculator.css";
 import React from "react";
+import Keys from "../Keys/Keys";
 
 
 export default class Calculator extends React.Component {
@@ -8,7 +9,7 @@ export default class Calculator extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            buttons: [
+            keys: [
              {symbol: "AC", text: "clear"},
              {symbol: "/", text: "divide"},
              {symbol: "x", text: "multiply"},
@@ -33,7 +34,7 @@ export default class Calculator extends React.Component {
     render() {
         return (
             <div className="calculator">
-
+                <Keys keys={this.state.keys} />
             </div>
         )
     }

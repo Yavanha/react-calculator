@@ -2,12 +2,14 @@ import "./App.css"
 
 import React from "react"
 
+import Calculator from "./Components/Calculator/Calculator"
+
 export default class App extends React.Component { 
 
   render() {
       return (
         <main className="main-container">
-          <div>Hello World</div>
+          <Calculator />
         </main>
       )
   }
