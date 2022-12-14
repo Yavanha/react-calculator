@@ -7,7 +7,11 @@
 }
 
 :root {
-  --light-pink : #c2c2d6
+  --light-pink : #c2c2d6;
+  --dark-grey: rgb(77, 77, 77);
+  --light-red: rgb(172, 57, 57);
+  --light-blue: rgb(0, 68, 102);
+  --light-grey : rgb(102, 102, 102);
 }
 
 html {

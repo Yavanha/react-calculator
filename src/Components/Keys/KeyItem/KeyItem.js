@@ -1,4 +1,4 @@
-import "./KeyItem.css";
+import "./KeyItem.css"
 
 import React from "react";
 
@@ -8,6 +8,7 @@ export default class KeyItem extends React.Component {
         const {text, symbol} = this.props.keyItem;
         return (
             <article id={text} className="key-item">
+                {symbol}
             </article>
         )
     }
