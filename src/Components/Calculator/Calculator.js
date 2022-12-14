@@ -6,8 +6,27 @@ export default class Calculator extends React.Component {
 
 
     constructor(props) {
+        super(props)
         this.state = {
-            touches: ["AC", "/", "X", "7", "8", "9", "-", "4", "5", "6", "+", "1", "2", "3", "=", "0", "."]
+            buttons: [
+             {symbol: "AC", text: "clear"},
+             {symbol: "/", text: "divide"},
+             {symbol: "x", text: "multiply"},
+             {symbol: "7", text: "seven"},
+             {symbol: "8", text: "eight"},
+             {symbol: "9", text: "nine"},
+             {symbol: "-", text: "subtract"},
+             {symbol: "4", text: "four"},
+             {symbol: "5", text: "five"},
+             {symbol: "6", text: "six"},
+             {symbol: "+", text: "add"},
+             {symbol: "1", text: "one"},
+             {symbol: "2", text: "two"},
+             {symbol: "3", text: "three"},
+             {symbol: "=", text: "equals"},
+             {symbol: "0", text: "zero"},
+             {symbol: ".", text: "decimal"},
+            ]
         }
     }
 
