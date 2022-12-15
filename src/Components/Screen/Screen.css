@@ -1,0 +1,23 @@
+.screen {
+    display: flex;
+    flex-direction: column;
+    row-gap: .5rem;
+    padding: 1rem;
+    min-height: 6rem;
+
+    justify-content: flex-end;
+}
+
+.top-screen {
+    color : orange;
+    text-align: right;
+    max-width: 34rem;
+    word-break: break-all;
+}
+
+
+.bot-screen {
+    color : white;
+    text-align: right;
+    font-size: 2rem;
+}
