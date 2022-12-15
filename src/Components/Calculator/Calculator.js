@@ -111,8 +111,11 @@ export default class Calculator extends React.Component {
                     result : parseFloat(result)
                }      
            
-            } else if((isNaN(prevState.lastKeyPressed) &&  (innerText === "-" || innerText === "+")) || !(prevState.lastDisplay.includes('.') && innerText === '.') && (prevState.lastKeyPressed === "=" 
-                    || !(isNaN(innerText) && (isNaN(prevState.lastKeyPressed) || prevState.lastKeyPressed.length === 0 )) )) {
+            } else if(
+                ((isNaN(prevState.lastKeyPressed)) &&  (innerText === "-" || innerText === "+")) 
+                || (!(prevState.lastDisplay.includes('.') && (innerText === '.'))) 
+                && ((prevState.lastKeyPressed === "=" ) 
+                || (!(isNaN(innerText) && (isNaN(prevState.lastKeyPressed) || prevState.lastKeyPressed.length === 0 )) ))) {
 
                 if (isNaN(innerText) &&  innerText !== '.') {
                     displayStr = prevState.lastKeyPressed === "=" ? `${prevState.result} ${event.target.innerText} ` : `${prevState.display} ${event.target.innerText} `

@@ -5,14 +5,6 @@ import KeyItem from "./KeyItem/KeyItem";
 
 export default class Keys extends React.Component {
 
-
-    constructor(props) {
-        super(props);
-
-    }
-
-
-
     renderKeyItem() {
         const { keys } = this.props;
         const {onClickKeyItems} = this.props;
