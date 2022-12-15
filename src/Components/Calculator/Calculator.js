@@ -17,10 +17,22 @@ export default class Calculator extends React.Component {
             lastKeyPressed: '',
             result : 0,
             operations : {
-                '+' : (a, b) => a + b,
-                '/' : (a, b) => a / b,
-                'x' : (a, b) => a * b,
-                '-' : (a, b) => a - b,
+                '+' : {
+                    priority : 0,
+                    cmd : (a, b) => a + b,
+                },
+                '/' : {
+                    priority : 3,
+                    cmd : (a, b) => a / b,
+                },
+                'x' : {
+                    priority : 4,
+                    cmd: (a, b) => a * b,
+                },
+                '-' :{
+                    priority : 1,
+                    cmd:  (a, b) => a - b
+                },
             },
             keys: [
                 { symbol: "AC", text: "clear", },
@@ -51,7 +63,6 @@ export default class Calculator extends React.Component {
 
         this.setState((prevState) => {
             const { id, innerText } = event.target;
-            console.log("equals ", prevState.lastKeyPressed)
             let displayStr = ''
             if (id === "clear") {
                 return {
@@ -60,25 +71,51 @@ export default class Calculator extends React.Component {
                     lastKeyPressed: '',
                 }
             } else if(id === "equals" && !isNaN(prevState.lastKeyPressed)) {
-                const opeArr = prevState.display.split(' ');
-                console.log(opeArr)
-                let total  = parseFloat(opeArr.shift());
-                console.log({total})
-                while(opeArr.length) {
-                    const elt  = opeArr.shift();
-                    total = prevState.operations[elt](total, parseFloat(opeArr.shift()))
-                
-                }
+                const opeArr = prevState.display.split(' ').filter(a => a.length);
+                const copyOpeArr = [...opeArr]
+                const opes  = copyOpeArr.filter(ope => isNaN(ope))
+                opes.sort((a, b) =>  prevState.operations[b].priority -prevState.operations[a].priority )
+                opes.forEach(ope => {
+                    const index = opeArr.indexOf(ope);
+                    if( index !== -1) {
+                        let next = 0
+                        let results = undefined;
+                        if(opeArr.at(index + 1) === "-" ) {
+                            opeArr.splice(index + 1, 1);
+                            if(opeArr.at(index + 1) === "+") {
+                                opeArr.splice(index + 1, 1);
+                                next = parseFloat(opeArr.at(index + 1));
+                                results =  prevState.operations['+'].cmd(parseFloat(opeArr.at(index - 1)), next)
+
+                            } else {
+                                next = parseFloat(opeArr.at(index + 1)) * -1;
+                            }
+                        } else if (opeArr.at(index + 1) === "+") {
+                            opeArr.splice(index + 1, 1);
+                            next = parseFloat(opeArr.at(index + 1));
+                        }
+                        else {
+                            next = parseFloat(opeArr.at(index + 1));
+                        }
+                        if(!results)
+                            results =  prevState.operations[ope].cmd(parseFloat(opeArr.at(index - 1)), next)
+                        console.log(results)
+                        opeArr.splice(index - 1, 3, `${results}`)
+                    }
+                })
+                const [result] = opeArr; 
                 return {
-                    display: `${prevState.display}${innerText} ${total}`,
-                    lastDisplay : `${total}`, 
+                    display: `${parseFloat(result)}`,
+                    lastDisplay : `${parseFloat(result)}`,
                     lastKeyPressed : `${innerText}`,
-                    result : total
-                }
-            } else if(prevState.lastKeyPressed === "=" 
-                    || !(isNaN(innerText) && (isNaN(prevState.lastKeyPressed) || prevState.lastKeyPressed.length === 0))) {
+                    result : parseFloat(result)
+               }      
+           
+            } else if((isNaN(prevState.lastKeyPressed) &&  (innerText === "-" || innerText === "+")) || !(prevState.lastDisplay.includes('.') && innerText === '.') && (prevState.lastKeyPressed === "=" 
+                    || !(isNaN(innerText) && (isNaN(prevState.lastKeyPressed) || prevState.lastKeyPressed.length === 0 )) )) {
+
                 if (isNaN(innerText) &&  innerText !== '.') {
-                    displayStr = prevState.lastKeyPressed === "=" ? `${prevState.result} ${event.target.innerText} `  : `${prevState.display} ${event.target.innerText} `
+                    displayStr = prevState.lastKeyPressed === "=" ? `${prevState.result} ${event.target.innerText} ` : `${prevState.display} ${event.target.innerText} `
 
                 } else {
                     displayStr = prevState.lastKeyPressed === "=" ? `${innerText}` : `${prevState.display}${innerText}`
@@ -97,10 +134,11 @@ export default class Calculator extends React.Component {
 
     setDisplay(text, keyPressed) {
 
-        const displayArr = text.trim().split(' ');
+        const displayArr = text.trim().replace(/^0+$/g, '0').split(' ').filter( a => a.length);
         console.log(displayArr)
+
         return {
-            display: text,
+            display: text.replace(/^0+$/g, '0'),
             lastDisplay: `${displayArr.at(-1)}`,
             lastKeyPressed: `${keyPressed}`
         }

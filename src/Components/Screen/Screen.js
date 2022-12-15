@@ -11,8 +11,8 @@ export default class Screen extends React.Component {
         const {display, currentDisplay} = this.props;
 
         return (
-            <article id="display" className="screen">
-                <div className="top-screen">{display}</div>
+            <article  className="screen">
+                <div id="display" className="top-screen">{display.length ? display : '0'}</div>
                 <div className="bot-screen">{currentDisplay}</div>
             </article>
         )
